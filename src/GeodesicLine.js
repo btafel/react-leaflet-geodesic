@@ -1,18 +1,29 @@
-import { withLeaflet, Path } from 'react-leaflet'
+import { useEffect, useRef } from 'react'
+import { useMap } from 'react-leaflet'
 import { GeodesicLine as LeafletGeodesicLine } from 'leaflet.geodesic'
 
-class GeodesicLine extends Path {
-  createLeafletElement(props) {
-    const { positions, options } = props
-    return new LeafletGeodesicLine(positions, options)
-  }
+const GeodesicLine = props => {
+  const { positions, options } = props
+  map = useMap()
+  const line = useRef(null)
 
-  updateLeafletElement(fromProps, toProps) {
-    if (toProps.positions !== fromProps.positions) {
-      this.leafletElement.setLatLngs(toProps.positions)
+  useEffect(() => {
+    if (!line.current) {
+      line.current = LeafletGeodesicLine(positions, options)
     }
-    this.setStyleIfChanged(fromProps, toProps)
-  }
+  }, [map])
+
+  useEffect(() => {
+    if (line.current) {
+      line.current.setLatLngs(positions)
+    }
+  }, [positions])
+
+  useEffect(() => {
+    if (line.current) {
+      line.current.setLatLngs(options)
+    }
+  }, [options])
 }
 
-export default withLeaflet(GeodesicLine)
+export default GeodesicLine
