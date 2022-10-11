@@ -1,29 +1,38 @@
-import { useEffect, useRef } from 'react'
-import { useMap } from 'react-leaflet'
-import { GeodesicLine as LeafletGeodesicLine } from 'leaflet.geodesic'
+import { useEffect, useRef } from "react";
+import { GeodesicLine as LeafletGeodesicLine } from "leaflet.geodesic";
+// import L from "leaflet.geodesic";
 
 const GeodesicLine = props => {
-  const { positions, options } = props
-  map = useMap()
-  const line = useRef(null)
+  const { positions, options, map } = props;
+  // console.log("test");
+  // const map = useMap();
+  // console.log(map);
+  const line = useRef(null);
 
   useEffect(() => {
     if (!line.current) {
-      line.current = LeafletGeodesicLine(positions, options)
+      line.current = new LeafletGeodesicLine(positions, options).addTo(map);
+      // line.current = new L.Geodesic(positions).addTo(map);
     }
-  }, [map])
+
+    return () => {
+      line.current.remove();
+    };
+  }, [map]);
 
   useEffect(() => {
     if (line.current) {
-      line.current.setLatLngs(positions)
+      line.current.setLatLngs(positions);
     }
-  }, [positions])
+  }, [positions]);
 
-  useEffect(() => {
-    if (line.current) {
-      line.current.setLatLngs(options)
-    }
-  }, [options])
-}
+  // useEffect(() => {
+  //   if (line.current) {
+  //     line.current.setOptions(options);
+  //   }
+  // }, [options]);
 
-export default GeodesicLine
+  return null;
+};
+
+export default GeodesicLine;

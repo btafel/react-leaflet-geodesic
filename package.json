@@ -1,6 +1,6 @@
 {
-  "name": "react-leaflet-geodesic",
-  "version": "2.0.0",
+  "name": "react-leaflet-geodesic3",
+  "version": "2.0.4",
   "description": "Geodesic curves as React compoment for Leaflet",
   "main": "dist/react-leaflet-geodesic.min.js",
   "scripts": {
